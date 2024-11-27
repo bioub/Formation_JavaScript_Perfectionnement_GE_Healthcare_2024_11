@@ -1,6 +1,6 @@
 // Exporter Random
 
-const Random = {
+export const Random = {
   getRandom() {
     return Math.random();
   },

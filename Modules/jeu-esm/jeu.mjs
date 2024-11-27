@@ -1,6 +1,7 @@
 // Import Random depuis le fichier random
 // Exporter Jeu pour l'importer dans main
-const readline = require('readline');
+import { Random } from './random.mjs'
+import readline from 'readline';
 
 class Jeu {
   constructor(options = {}) {
@@ -47,3 +48,4 @@ class Jeu {
 
 }
 
+export default Jeu;
