@@ -1,5 +1,7 @@
 // En JS un certain nombre d'objet sont pré-existants :
 console.log("typeof Math", typeof Math); // object
+console.log("typeof JSON", typeof JSON); // object
+console.log("typeof String", typeof String); // function (donc object)
 
 // Certains objets sont définis par la plateforme
 
@@ -106,6 +108,7 @@ const romain = new User('Romain');
 console.log('typeof User', typeof User); // function
 console.log('typeof romain', typeof romain); // object
 console.log('romain instanceof User', romain instanceof User); // true
+console.log('romain instanceof Object', romain instanceof Object); // true
 console.log('romain.name', romain.name); // Romain
 
 const toto = new User('Toto');
@@ -115,4 +118,4 @@ console.log('toto.hello()', toto.hello()); // Hello Toto
 console.log("toto.hasOwnProperty('name')", toto.hasOwnProperty('name')); // true
 console.log("toto.hasOwnProperty('hello')", toto.hasOwnProperty('hello')); // false
 
-console.log('toto.hello === romain.hello', toto.hello === romain.hello); // false
+console.log('toto.hello === romain.hello', toto.hello === romain.hello); // true (la même fonction)
