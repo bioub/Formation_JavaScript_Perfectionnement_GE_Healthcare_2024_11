@@ -4,25 +4,26 @@
 // Il faudra appeler getRandomInt :
 // Random.getRandomInt(0, 100);
 
-function getRandom() {
-  return Math.random();
-}
+const Random = {
+  getRandom() {
+    return Math.random();
+  },
+  getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  },
+  getRandomInt(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
+  },
+  getRandomIntInclusive(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
+  },
+};
 
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
 
-function getRandomInt(min, max) {
-  const minCeiled = Math.ceil(min);
-  const maxFloored = Math.floor(max);
-  return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // The maximum is exclusive and the minimum is inclusive
-}
-
-function getRandomIntInclusive(min, max) {
-  const minCeiled = Math.ceil(min);
-  const maxFloored = Math.floor(max);
-  return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // The maximum is inclusive and the minimum is inclusive
-}
 
 // importe readline du fichier readline.js (binaire de Node.js)
 const readline = require('readline');
@@ -40,46 +41,64 @@ const readline = require('readline');
 // const game = new Jeu();
 // game.jouer();
 
-// configure readline pour lire sur le clavier et écrire dans le terminal
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-const entierAlea = getRandomInt(0, 100);
-const essais = [];
+class Jeu {
+  constructor(options = {}) {
+    // Style ES6 via la méthode Object.assi
+    // const myOptions = Object.assign({}, {min: 0, max: 100}, options);
 
-function jouer() {
-  if (essais.length) {
-    console.log('Vous avez déjà joué : ' + essais.join(' - '));
+    // Style ES6 avec Object destructuring
+    // const { min = 0, max = 100 } = options;
+
+    const min = options?.min ?? 0;
+    const max = options?.max ?? 100;
+
+    this.rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    this.entierAlea = Random.getRandomInt(min, max);
+    this.essais = [];
   }
-
-  rl.question('Quel est le nombre ? ', (answer) => {
-    console.log('Votre réponse : ' + answer);
-
-    const entierSaisi = Number.parseInt(answer, 10);
-
-    if (Number.isNaN(entierSaisi)) {
-      console.log('Erreur: il faut saisir un nombre');
-      return jouer();
+  jouer() {
+    if (this.essais.length) {
+      console.log('Vous avez déjà joué : ' + this.essais.join(' - '));
     }
 
-    essais.push(entierSaisi);
+    this.rl.question('Quel est le nombre ? ', (answer) => {
+      console.log('Votre réponse : ' + answer);
 
-    if (entierSaisi < entierAlea) {
-      console.log('Trop petit');
-      jouer();
-    } else if (entierSaisi > entierAlea) {
-      console.log('Trop grand');
-      jouer();
-    } else {
-      console.log('Gagné');
-      rl.close();
-    }
-  });
+      const entierSaisi = Number.parseInt(answer, 10);
+
+      if (Number.isNaN(entierSaisi)) {
+        console.log('Erreur: il faut saisir un nombre');
+        return this.jouer();
+      }
+
+      this.essais.push(entierSaisi);
+
+      if (entierSaisi < this.entierAlea) {
+        console.log('Trop petit');
+        this.jouer();
+      } else if (entierSaisi > this.entierAlea) {
+        console.log('Trop grand');
+        this.jouer();
+      } else {
+        console.log('Gagné');
+        this.rl.close();
+      }
+    });
+
+  }
 
 }
 
-jouer();
+// configure readline pour lire sur le clavier et écrire dans le terminal
+
+const game = new Jeu({
+  min: 10,
+  max: 20,
+});
+game.jouer();
 
 // Exercice 3
 // Prévoir des options min et max au constructeur Jeu

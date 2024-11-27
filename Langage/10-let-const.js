@@ -10,6 +10,8 @@ const coords = {
   y: 2,
 };
 
+// Object.freeze(coords);
+
 coords.z = 3;
 
 let prenom = 'R';

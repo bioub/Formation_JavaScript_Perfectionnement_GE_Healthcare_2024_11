@@ -1,7 +1,7 @@
 const names = ['Romain', 'Eric', 'Paul'];
 
 function hello(name) {
-  return 'Hello ' + name;
+  return `Hello ${name}`;
 }
 
 for (const n of names) {

@@ -119,3 +119,20 @@ console.log("toto.hasOwnProperty('name')", toto.hasOwnProperty('name')); // true
 console.log("toto.hasOwnProperty('hello')", toto.hasOwnProperty('hello')); // false
 
 console.log('toto.hello === romain.hello', toto.hello === romain.hello); // true (la même fonction)
+
+
+// for (const key in coordsA) {
+//   if (Object.prototype.hasOwnProperty.call(coordsA, key)) {
+//     const value = coordsA[key];
+
+//   }
+// }
+
+const contact = {
+  firstName: 'Romain',
+  lastName: 'Bohdanowicz',
+};
+
+for (const [key, value] of Object.entries(contact)) {
+  console.log(key, value);
+}
