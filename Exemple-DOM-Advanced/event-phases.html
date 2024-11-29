@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .externe {
+        width: 200px;
+        height: 200px;
+        border: 1px solid black;
+        display: flex;
+      }
+
+      .interne {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        margin: auto;
+      }
+    </style>
+    <script type="module">
+      const externeEl = document.querySelector('.externe');
+      const interneEl = document.querySelector('.interne');
+
+      externeEl.addEventListener('click', () => {
+        console.log('click externe');
+      });
+
+      interneEl.addEventListener('click', () => {
+        console.log('click interne');
+        console.log(event.eventPhase === event.CAPTURING_PHASE, 'capture phase');
+        console.log(event.eventPhase === event.AT_TARGET, 'target phase');
+        console.log(event.eventPhase === event.BUBBLING_PHASE, 'bubbling phase');
+
+      });
+
+      document.addEventListener('click', () => {
+        console.log('click document');
+      });
+
+      window.addEventListener('click', (event) => {
+
+
+        console.log('click window');
+      }, { capture: false, once: true });
+    </script>
+</head>
+<body>
+    <div class="externe">
+      <div class="interne">
+
+      </div>
+    </div>
+</body>
+</html>
