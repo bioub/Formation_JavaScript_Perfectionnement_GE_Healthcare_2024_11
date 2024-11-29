@@ -90,3 +90,38 @@ listEl.addEventListener("keyup", (event) => {
     target.replaceWith(createTodoSpan(target.value));
   }
 });
+
+
+// Exercice 1
+// Démarrer les 2 serveurs (Web-APIs et Node-Serveur) en lançant à chaque fois
+// la commande npm run serve:dev
+
+// Utiliser fetch en vous inspirant de l'exemple suivant :
+// https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+
+// Au chargement de la page (ici par exemple),
+// envoyer une requête vers GET http://localhost:3000/todos
+// transformer la réponse en JSON (res.json())
+// et afficher le résultat dans la console dans un premier temps
+
+// Puis avec une boucle for..of boucler sur les todos récupérer
+// et appeler createTodoItem en vous inspirant de ce qui a été
+// fait dans le listener de submit
+
+// Exercice 2
+// Ecouter l'événement input de inputEl
+// stocker la saisie dans le localStorage et remplir
+// le champ avec cette valeur au chargement de la page
+
+// Bonus : Exercice 3
+// Au submit du formulaire, envoyer la requête POST http://localhost:3000/todos
+// avec la todo transformé en JSON en body de la requête
+// et avec l'entête Content-type: application/json
+// (voir les exemples de POST et Content-type ici :
+// https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+// )
+
+// Bonus : Exercice 4
+// Compléter le code de Node-Serveur pour qu'il supprime les todos sur les requêtes DELETE
+// Au clic du bouton moins, envoyer un requete DELETE http://localhost:3000/todos/123
+// en remplaçant 123 par l'id de la todo stocké en <div class="todo-item" data-todo-id="123">
