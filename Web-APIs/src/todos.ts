@@ -38,18 +38,18 @@ export function createTodoItem(todo: Todo) {
   // Ecouter le click du bouton moins
   // et supprimer la balise <div class="todo-item"> parent
   // Regarder dans Element/HTMLElement sur MDN comment supprimer un élément
-  buttonEl.addEventListener('click', () => {
-    divEl.remove();
-  });
+  // buttonEl.addEventListener('click', () => {
+  //   divEl.remove();
+  // });
 
   // Exercice 4
   // Ecouter le double click (dblclick) de spanEl
   // et le remplacer par un <input> prérempli avec la valeur
   // Si on tape sur la touche ENTREE dans cet input
   // revenir à un élément <span>
-  spanEl.addEventListener('dblclick', () => {
-    spanEl.replaceWith(createTodoInput(spanEl.innerText));
-  });
+  // spanEl.addEventListener('dblclick', () => {
+  //   spanEl.replaceWith(createTodoInput(spanEl.innerText));
+  // });
 
   // Exercice 5
   // Transformer le code en TypeScript
@@ -60,7 +60,7 @@ export function createTodoItem(todo: Todo) {
 /**
  * @param {string} title
  */
-function createTodoSpan(title: string) {
+export function createTodoSpan(title: string) {
   const spanEl = document.createElement('span');
   spanEl.className = 'todo-item-value';
   spanEl.innerText = title;
@@ -71,17 +71,22 @@ function createTodoSpan(title: string) {
 /**
  * @param {string} title
  */
-function createTodoInput(title: string) {
+export function createTodoInput(title: string) {
   const inputEl = document.createElement('input');
   inputEl.type = 'text';
   inputEl.className = 'todo-item-value-edit';
   inputEl.value = title;
+  setTimeout(() => {
+    inputEl.select();
+    // inputEl.selectionStart = 0;
+    // inputEl.selectionEnd = 3;
+  }, 0);
 
-  inputEl.addEventListener('keyup', (event) => {
-    if (event.key === 'Enter') {
-      inputEl.replaceWith(createTodoSpan(inputEl.value));
-    }
-  });
+  // inputEl.addEventListener('keyup', (event) => {
+  //   if (event.key === 'Enter') {
+  //     inputEl.replaceWith(createTodoSpan(inputEl.value));
+  //   }
+  // });
 
   return inputEl;
 }
