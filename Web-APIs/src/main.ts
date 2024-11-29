@@ -1,4 +1,4 @@
-import { createTodoInput, createTodoItem, createTodoSpan } from "./todos";
+import { createTodoInput, createTodoItem, createTodoSpan, Todo } from "./todos";
 
 const formEl = document.querySelector(".todo-form") as HTMLFormElement;
 
@@ -8,7 +8,7 @@ const inputEl = document.querySelector(".todo-input") as HTMLInputElement;
 
 const listEl = document.querySelector(".todo-list") as HTMLDivElement;
 
-formEl.addEventListener("submit", (event) => {
+formEl.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   document.querySelector(".todo-error")?.remove();
@@ -31,12 +31,13 @@ formEl.addEventListener("submit", (event) => {
   // % @ et les chiffres dans le champ (ne rien faire si ces chars sont présent)
   // Bonus : Afficher une erreur dans un div si les caractères sont présent
   // Bonus : Afficher le champs en rouge si une erreur se produit (CSSOM)
-
-  const divEl = createTodoItem({
-    id: Math.random(),
+  const newTodo = await postTodo({
     title: inputEl.value,
     completed: false,
-  });
+  })
+
+
+  const divEl = createTodoItem(newTodo);
 
   listEl.append(divEl);
 });
@@ -66,10 +67,12 @@ togglerEl.addEventListener("click", () => {
 // Indication en TS:
 // const target = event.target as HTMLElement;
 
-listEl.addEventListener("click", (event) => {
+listEl.addEventListener("click", async (event) => {
   const target = event.target as HTMLElement;
   if (target.classList.contains("todo-delete")) {
-    target.closest(".todo-item")?.remove();
+    const todoItemEl = target.closest(".todo-item") as HTMLDivElement;
+    await deleteTodo(todoItemEl.dataset.todoId!);
+    todoItemEl.remove();
   }
 });
 
@@ -108,10 +111,27 @@ listEl.addEventListener("keyup", (event) => {
 // et appeler createTodoItem en vous inspirant de ce qui a été
 // fait dans le listener de submit
 
+async function fetchTodos() {
+  const res = await fetch('http://localhost:3000/todos');
+  const todos = await res.json();
+
+  for (const todo of todos) {
+    const divEl = createTodoItem(todo);
+    listEl.append(divEl);
+  }
+}
+
+fetchTodos();
 // Exercice 2
 // Ecouter l'événement input de inputEl
 // stocker la saisie dans le localStorage et remplir
 // le champ avec cette valeur au chargement de la page
+
+inputEl.addEventListener('input', () => {
+  localStorage.setItem('todo-input', inputEl.value);
+});
+
+inputEl.value = localStorage.getItem('todo-input') ?? '';
 
 // Bonus : Exercice 3
 // Au submit du formulaire, envoyer la requête POST http://localhost:3000/todos
@@ -121,7 +141,27 @@ listEl.addEventListener("keyup", (event) => {
 // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 // )
 
+async function postTodo(todo: Omit<Todo, 'id'>) {
+  const res = await fetch('http://localhost:3000/todos', {
+    method: 'POST',
+    body: JSON.stringify(todo),
+    headers: {
+      'Content-type': 'application/json',
+    },
+  });
+  const newTodo = await res.json();
+  return newTodo;
+}
+
 // Bonus : Exercice 4
 // Compléter le code de Node-Serveur pour qu'il supprime les todos sur les requêtes DELETE
 // Au clic du bouton moins, envoyer un requete DELETE http://localhost:3000/todos/123
 // en remplaçant 123 par l'id de la todo stocké en <div class="todo-item" data-todo-id="123">
+
+async function deleteTodo(id: string) {
+  const res = await fetch(`http://localhost:3000/todos/${id}`, {
+    method: 'DELETE'
+  });
+  const oldTodo = await res.json();
+  return oldTodo;
+}

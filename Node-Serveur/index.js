@@ -44,9 +44,16 @@ app.delete('/todos/:id', (req, res) => {
 
   // Rechercher la todo avec la variable id
   // la supprimer du tableau
+  const index = todos.findIndex((t) => t.id === id);
 
-  // écrire dans la réponse HTTP en JSON
-  // la todo qui vient d'être supprimée
+  if (index === -1) {
+    return res.status(404).json({msg: 'Todo not found'});
+  }
+
+  const todo = todos[index];
+  todos.splice(index, 1);
+
+  return res.json(todo);
 });
 
 app.listen(3000, () => {
